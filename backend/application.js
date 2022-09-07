@@ -19,7 +19,8 @@ const mongoose = require("mongoose");
 */
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    ssl: true
 })
     .then(() => console.log("connexion à MongoDB réussie ! "))
     .catch(() => console.log("connexion à MongoDB échouée"))
