@@ -10,4 +10,9 @@ const userController = require("../controller/userController");
 
 
 // Method signUp used
-router.post("/signUp", userController.signUp);
+router.post("/api/auth/signup", userController.signUp);
+
+
+router.post("/api/auth/login"); 
+
+module.exports = router;
