@@ -12,18 +12,18 @@ application.use(express.json());
 const mongoose = require("mongoose");
 
 
-// require('dotenv').config();
-
-/** Connexion to mongoose 
- * 
-*/
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    ssl: true
 })
-    .then(() => console.log("connexion à MongoDB réussie ! "))
-    .catch(() => console.log("connexion à MongoDB échouée"))
+    .then(() => console.log("Connexion successfull "))
+    .catch(() => console.log("Please check connexion"));
 
+
+const userRoute = require('./routes/userRoutes'); 
+
+const sauceRoute = require('./routes/sauceRoutes'); 
 
 // to export application
 module.exports = application;

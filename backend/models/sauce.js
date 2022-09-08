@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const sauceLikedOrNot = require('./typeOfLikes');
 
 const sauceSchema = mongoose.Schema({
     userId: { type: String, require: true },
@@ -11,8 +10,8 @@ const sauceSchema = mongoose.Schema({
     heat: { type: Number, require: true },
     likes: { type: Number, require: true },
     dislikes: { type: Number, require: true },
-    usersLiked:  {type: sauceLikedOrNot},
-    usersDisliked: {type: sauceLikedOrNot}
+    usersLiked: [userId],
+    usersDisliked: [userId]
 });
 
 module.exports = mongoose.model('Sauce', sauceSchema);
