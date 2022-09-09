@@ -17,7 +17,7 @@ const jsonwebtoken = require('jsonwebtoken');
  *  4. Using save to save the new user and take promise to execute
  *  5. After the crypt process, a catch is used to catch any error occuring
  */
-exports.signUp = (request, response, next) => {
+exports.signup = (request, response, next) => {
     bcrypt.hash(request.body.password, 10)
     .then(cryptedPassword =>{
         const user = new User({
@@ -26,9 +26,10 @@ exports.signUp = (request, response, next) => {
         });
 
         user.save()
-        .then((response) => response.status(201).json({ message: "User created"}))
-        .catch(error => response.status(400).json({message: error + "Something went wrong"}))
+        .then(() => response.status(201).json({ message: "User created"}))
+        .catch(error => response.status(400).json({message: error + "Something went wrong"}));
     })
 
+   
     .catch(error => response.status(500).json({error}));
 };

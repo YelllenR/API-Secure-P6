@@ -9,10 +9,11 @@ const router = express.Router(express);
 const userController = require("../controller/userController");
 
 
+
 // Method signUp used
-router.post("/api/auth/signup", userController.signUp);
+router.post('/signup', userController.signup);
 
 
-router.post("/api/auth/login"); 
+router.post('/login'); 
 
 module.exports = router;

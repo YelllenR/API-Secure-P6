@@ -1,3 +1,4 @@
+
 const jsonwebtoken = require('jsonwebtoken');
 
 
@@ -17,7 +18,7 @@ module.exports = (request, response, next) => {
         const tokenToDecode = jsonwebtoken.verify(generatedToken, _id);
         const userId = tokenToDecode.userId;
 
-        request.auth = {
+        request.authentification = {
             userId: userId
         };
     }
@@ -25,3 +26,4 @@ module.exports = (request, response, next) => {
         response.status(401).json({ error })
     }
 };
+
