@@ -31,7 +31,7 @@ const portValueCheck = valueOfPort => {
  * PORT and ANOTHER_PORT are set in env file
  */
 const port = portValueCheck(process.env.PORT || process.env.ANOTHER_PORT);
-application.set('port', port)
+application.set('port', port);
 
 
 
@@ -57,7 +57,7 @@ const errorHandler = error => {
     else if ('EADDRINUSE') {
         console.error(binding + ' is already in use');
         process.exit(1);
-    }  
+    }
 };
 
 
