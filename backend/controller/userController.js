@@ -10,7 +10,16 @@ const bcrypt = require('bcrypt');
  * Import jsonwebtoken
  */
 const jsonwebtoken = require('jsonwebtoken');
-const { db } = require('../models/user');
+
+
+/** Array of like type for sauce
+ * 
+ */
+ const likeSauce = {
+    like: 1,
+    neutral: 0,
+    dislike: -1
+};
 
 /** 1. .signUp takes three parameters: 1. the request on signing up, 2. the response and next(* not used here)
  *  2. Gets the crypted password which is an asynchronus method that returns promise
@@ -19,7 +28,7 @@ const { db } = require('../models/user');
  *  5. After the crypt process, a catch is used to catch any error occuring
  */
 exports.signup = (request, response, next) => {
-    
+
     bcrypt.hash(request.body.password, 10)
         .then(cryptedPassword => {
             const user = new User({
@@ -28,11 +37,11 @@ exports.signup = (request, response, next) => {
             });
 
             user.save()
-                .then(() => response.status(201).json({ message: "User created" + user}))
+                .then(savingUser => response.status(201).json({ message: "User created" + savingUser}))
                 .catch(error => response.status(400).json({ message: error + "Something went wrong" }));
         })
 
-        .catch(error => response.status(500).json({ error }));
+        .catch(error => response.status(500).json({ message: error }));
 
 };
 
@@ -68,7 +77,7 @@ exports.login = (request, response, next) => {
                                 token: jsonwebtoken.sign(
 
                                     { userId: user._id },
-                                    //  "RANDOM_TOKEN_SECRET", to be generated ? comment faire?
+                                    process.env.SECRETE_TOKEN,
 
                                     { expiresIn: "24h" }
                                 )
@@ -86,3 +95,21 @@ exports.login = (request, response, next) => {
             response.status(500).json({ error });
         });
 };
+
+
+// /** POST LIKE OR NOT ON SAUCE
+//  * @param {request, response, next} arrow function that calls the find method
+//  * 
+//  * @return {Promise} 
+//  * 
+//  * 
+//  */
+//  const postRatingSauce = (request, response, next) => {
+//     Sauce.findOne()
+//         .then(sauce => {
+//             if (sauce.userId != request.auth.userId)
+
+//         })
+//         .catch()
+
+// };

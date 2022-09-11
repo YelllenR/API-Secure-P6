@@ -12,9 +12,9 @@ const jsonwebtoken = require('jsonwebtoken');
  */
 module.exports = (request, response, next) => {
     try {
-        const generatedToken = request.headers.authorization.split("")[1];
+        const generatedToken = request.headers.authorization.split(' ')[1];
 
-        const tokenToDecode = jsonwebtoken.verify(generatedToken, _id);
+        const tokenToDecode = jsonwebtoken.verify(generatedToken, process.env.SECRETE_TOKEN);
         const userId = tokenToDecode.userId;
 
         request.auth = {

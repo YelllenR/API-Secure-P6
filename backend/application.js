@@ -38,7 +38,7 @@ application.use((request, response, next) => {
 
 
 // application.use((request, response, next) =>{
-//     response.json({message: "response.json()"})
+//     console.log(request.body);
 // });
 
 // with the method use and assigning properties for the route and the connexion file
@@ -46,6 +46,7 @@ application.use('/api/auth', userRoute);
 
 // With the method use and assigning properties for the route and the connexion file
 application.use('/api/sauces', sauceRoute);
+
 
 
 // to export application

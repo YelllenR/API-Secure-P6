@@ -24,21 +24,21 @@
 /**
  * 
  */
-router.get('/', auth);
+router.get('/', auth, multer, sauceController.getSauces);
 
 
-router.get('/:id', auth);
+router.get('/:id', auth, multer, sauceController.getOneSauce);
 
 
-router.post('/', auth);
+router.post('/', auth, multer, sauceController.postSauce);
 
-router.put('/:id', auth);
-
-
-router.delete('/:id', auth);
+router.put('/:id', auth, multer, sauceController.putSauce);
 
 
-router.post('/:id/like', auth);
+router.delete('/:id', auth, multer, sauceController.deleteSauce);
+
+
+// router.post('/:id/like', auth, multer, sauceController.postSauce);
 
 
  module.exports = router;
