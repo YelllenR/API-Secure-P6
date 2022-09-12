@@ -15,7 +15,7 @@ const jsonwebtoken = require('jsonwebtoken');
 /** Array of like type for sauce
  * 
  */
- const likeSauce = {
+const likeSauce = {
     like: 1,
     neutral: 0,
     dislike: -1
@@ -37,12 +37,11 @@ exports.signup = (request, response, next) => {
             });
 
             user.save()
-                .then(savingUser => response.status(201).json({ message: "User created" + savingUser}))
+                .then(savingUser => response.status(201).json({ message: "User created" + savingUser }))
                 .catch(error => response.status(400).json({ message: error + "Something went wrong" }));
         })
 
         .catch(error => response.status(500).json({ message: error }));
-
 };
 
 
@@ -77,6 +76,7 @@ exports.login = (request, response, next) => {
                                 token: jsonwebtoken.sign(
 
                                     { userId: user._id },
+
                                     process.env.SECRETE_TOKEN,
 
                                     { expiresIn: "24h" }
@@ -84,13 +84,13 @@ exports.login = (request, response, next) => {
                             })
                         }
                     })
-                    
+
                     .catch(error => {
                         response.status(500).json({ error });
                     })
             }
         })
-        
+
         .catch(error => {
             response.status(500).json({ error });
         });
@@ -99,10 +99,10 @@ exports.login = (request, response, next) => {
 
 // /** POST LIKE OR NOT ON SAUCE
 //  * @param {request, response, next} arrow function that calls the find method
-//  * 
-//  * @return {Promise} 
-//  * 
-//  * 
+//  *
+//  * @return {Promise}
+//  *
+//  *
 //  */
 //  const postRatingSauce = (request, response, next) => {
 //     Sauce.findOne()

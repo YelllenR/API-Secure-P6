@@ -1,5 +1,7 @@
 const express = require("express");
 
+const cors = require('cors');
+
 /** Acces to express with application.js
  * 
 */
@@ -19,34 +21,27 @@ const sauceRoute = require('./routes/sauceRoutes');
 
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    
+    useUnifiedTopology: true
 })
-    .then(() => console.log("Connexion successfull "))
-    .catch(() => console.log("Please check connexion"));
- 
 
-/** Creating setup for CORS
- * @param {request, response, next}
- */
-application.use((request, response, next) => {
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    next();
-});
+    .then((response) => response = console.log("Connexion successfull"))
+    .catch(errorConnexion => {
+        console.error("Please check connexion", errorConnexion)
+        process.exit();
+    });
 
+application.use('/api', cors());
 
-// application.use((request, response, next) =>{
-//     console.log(request.body);
-// });
 
 // with the method use and assigning properties for the route and the connexion file
-application.use('/api/auth', userRoute);
+application.use('/api/auth', cors(), userRoute);
+
 
 // With the method use and assigning properties for the route and the connexion file
-application.use('/api/sauces', sauceRoute);
+application.use('/api/sauces', cors(), sauceRoute);
+// application.options('/api', cors());
 
+// application.use('/api', express.static((__dirname, 'images')));
 
 
 // to export application

@@ -2,6 +2,7 @@
  * 
  */
 const Sauce = require('../models/sauce');
+const auth = require('../middleware/auth');
 
 const fileSystem = require('fs');
 
@@ -17,6 +18,8 @@ const getSauces = (request, response, next) => {
     Sauce.find()
         .then(allSauces => response.status(200).json(allSauces))
         .catch(notFound => response.status(400).json({ notFound }));
+
+    next();
 };
 
 
@@ -31,6 +34,8 @@ const getOneSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
         .then(oneSauce => response.status(200).json(oneSauce))
         .catch(notFound => response.status(404).json({ notFound }));
+
+    next();
 };
 
 
@@ -54,7 +59,9 @@ const postSauce = (request, response, next) => {
 
     sauce.save()
         .then(response => response.status(201).json({ message: "Sauce créée" }))
-        .catch(errorCreation => response.status(400).json({ errorCreation }));
+        .catch(errorCreation => response.status(403).json({ errorCreation }));
+
+    next();
 }
 
 
@@ -84,7 +91,7 @@ const putSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
         .then((sauce) => {
             if (sauce.userId != request.auth.userId) {
-                response.status(400).json({ message: "Cette opération n'est pas autorisée" })
+                response.status(403).json({ message: "Cette opération n'est pas autorisée" })
             }
             else {
                 Sauce.updateOne({ _id: request.params.id }), { ...sauceObjet, _id: request.params.id }
@@ -93,6 +100,7 @@ const putSauce = (request, response, next) => {
             }
         })
         .catch(error => response.status(400).json({ error }));
+
 };
 
 
@@ -113,7 +121,7 @@ const deleteSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
         .then(sauce => {
             if (sauce.userId != request.auth.userId) {
-                response.status(400).json({ message: "Cette suppression n'est pas autorisée" })
+                response.status(403).json({ message: "Cette suppression n'est pas autorisée" })
             }
             else {
                 const filename = sauce.imageUrl.split("/images/")[1];
@@ -127,14 +135,16 @@ const deleteSauce = (request, response, next) => {
         })
 
         .catch(error => response.status(500).json({ error }));
+
+
 };
 
 
 // Exporting the created functions
 module.exports = {
-    getSauces, 
+    getSauces,
     getOneSauce,
-    postSauce, 
+    postSauce,
     putSauce,
     deleteSauce
 };

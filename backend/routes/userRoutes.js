@@ -5,6 +5,9 @@ const express = require("express");
 
 const router = express.Router(express);
 
+
+
+
 // Access to controller file
 const userController = require("../controller/userController");
 
@@ -14,6 +17,6 @@ const userController = require("../controller/userController");
 router.post('/signup', userController.signup);
 
 // Method login used
-router.post('/login', userController.login); 
+router.post('/login',  userController.login); 
 
 module.exports = router;

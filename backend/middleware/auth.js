@@ -1,6 +1,7 @@
 
 const jsonwebtoken = require('jsonwebtoken');
 
+
 /** Gets the token generated 
  * Execute try / catch to detecte problems
  * 
@@ -25,5 +26,6 @@ module.exports = (request, response, next) => {
     catch (error) {
         response.status(401).json({ error })
     }
+
 };
 

@@ -47,17 +47,18 @@ const errorHandler = error => {
         throw error;
     }
 
+    console.log(error)
     const address = server.address();
     const binding = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
 
-    if ('EACCES') {
-        console.error(binding + ' requires higher priviledge');
-        process.exit(1);
-    }
-    else if ('EADDRINUSE') {
-        console.error(binding + ' is already in use');
-        process.exit(1);
-    }
+    // if ('EACCES') {
+    //     console.error(binding + ' requires higher priviledge');
+    //     process.exit(1);
+    // }
+    // else if ('EADDRINUSE') {
+    //     console.error(binding + ' is already in use');
+    //     process.exit(1);
+    // }
 };
 
 

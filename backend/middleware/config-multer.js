@@ -38,4 +38,4 @@ const storage = multer.diskStorage({
 });
 
 // Exporting the multer/ storage function and single to have a single image file. 
-module.exports = multer({storage}).single('image');
+module.exports = multer({storage}).single('images');
