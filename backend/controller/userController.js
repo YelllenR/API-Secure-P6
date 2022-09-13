@@ -42,6 +42,7 @@ exports.signup = (request, response, next) => {
         })
 
         .catch(error => response.status(500).json({ message: error }));
+
 };
 
 
@@ -94,6 +95,7 @@ exports.login = (request, response, next) => {
         .catch(error => {
             response.status(500).json({ error });
         });
+
 };
 
 

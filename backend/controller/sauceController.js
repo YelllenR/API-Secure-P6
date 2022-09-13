@@ -2,9 +2,12 @@
  * 
  */
 const Sauce = require('../models/sauce');
-const auth = require('../middleware/auth');
+
+const userId = require("../middleware/auth")
+
 
 const fileSystem = require('fs');
+
 
 
 /** GET ALL SAUCES
@@ -16,8 +19,8 @@ const fileSystem = require('fs');
  */
 const getSauces = (request, response, next) => {
     Sauce.find()
-        .then(allSauces => response.status(200).json(allSauces))
-        .catch(notFound => response.status(400).json({ notFound }));
+    // .then(allSauces => response.status(200).json(allSauces))
+    // .catch(notFound => response.status(400).json({ notFound }))
 
     next();
 };
@@ -33,7 +36,7 @@ const getSauces = (request, response, next) => {
 const getOneSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
         .then(oneSauce => response.status(200).json(oneSauce))
-        .catch(notFound => response.status(404).json({ notFound }));
+        .catch(notFound => response.status(404).json({ notFound }))
 
     next();
 };
@@ -47,15 +50,22 @@ const getOneSauce = (request, response, next) => {
  * 
  */
 const postSauce = (request, response, next) => {
-    const sauceObjet = JSON.parse(request.body.sauce);
+    
+    request.body.sauce = (request.body.sauce);
 
-
+    const url = request.protocol + '://' + request.get('host');
+    
     const sauce = new Sauce({
-        ...sauceObjet,
-        userId: request.auth.userId,
-        sauce: __filename,
-        imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file.filename}`
-    });
+        userId: request.body.sauce.userId, 
+        name: request.body.sauce.name,
+        manufacturer: request.body.sauce.manufacturer,
+        description: request.body.sauce.description,
+        mainPepper: request.body.sauce.mainPepper,
+        imageUrl: url +'/uploads' + request.file.filename,
+        heat: request.body.sauce.heat
+
+    })
+
 
     sauce.save()
         .then(response => response.status(201).json({ message: "Sauce créée" }))
@@ -101,6 +111,7 @@ const putSauce = (request, response, next) => {
         })
         .catch(error => response.status(400).json({ error }));
 
+    next();
 };
 
 
@@ -136,7 +147,7 @@ const deleteSauce = (request, response, next) => {
 
         .catch(error => response.status(500).json({ error }));
 
-
+    next();
 };
 
 

@@ -35,11 +35,8 @@ router.get('/:id', auth, sauceController.getOneSauce, function (request, respons
 });
 
 
-router.post('/', auth, multer, sauceController.postSauce, function (request, response, next) {
-    console.log("post called")
-    response.json({ message: "CORS for post is enable" })
-    
-});
+router.post('/', auth, multer, sauceController.postSauce);
+
 
 router.put('/:id', auth, multer, sauceController.putSauce, function (request, response, next){
     response.json({ message: "CORS for put is enable" })

@@ -13,19 +13,32 @@ const jsonwebtoken = require('jsonwebtoken');
  */
 module.exports = (request, response, next) => {
     try {
-        const generatedToken = request.headers.authorization.split(' ')[1];
+        const token = request.headers.authorization.split(' ')[1];
 
-        const tokenToDecode = jsonwebtoken.verify(generatedToken, process.env.SECRETE_TOKEN);
-        const userId = tokenToDecode.userId;
+        const decodedToken = jsonwebtoken.verify(token, process.env.SECRETE_TOKEN);
+        const userId = decodedToken.userId;
 
+
+
+        // console.log(userIdDecodedToken);
+
+
+        if (request.body.userId && (request.body.userId !== userId)) {
+            throw 'Invalid user ID'
+        }
+        else {
+            next();
+        }
+        
         request.auth = {
             userId: userId
         };
-
     }
     catch (error) {
-        response.status(401).json({ error })
+        response.status(401).json({ error: new Error('Invalid request') });
     }
 
 };
+
+
 

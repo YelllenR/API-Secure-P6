@@ -26,16 +26,16 @@ const MIME_TYPE = {
  * 
  */
 const storage = multer.diskStorage({
-    destination: function (request, file, callback) {
-        callback(null, 'uploads')
+    destination:(request, file, callback) => {
+        callback(null, 'uploads');
     },
-    filename: function (request, file, callback) {
-        const nameOfImage = file.originalname.split(" ").join("_");
+    filename:(request, file, callback) => {
+        const imgName = file.originalname.split(" ").join("_");
         const extentionType = MIME_TYPE[file.mimetype];
 
-        callback(null, nameOfImage + Date.now() + '.' + extentionType)
+        callback(null, imgName + "_" + Date.now() + '.' + extentionType)
     }
 });
 
 // Exporting the multer/ storage function and single to have a single image file. 
-module.exports = multer({storage}).single('images');
+module.exports = multer({ storage }).single('image');
