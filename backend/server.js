@@ -45,11 +45,7 @@ application.set('port', port);
 const errorHandler = error => {
     if (error.syscall !== 'listen') {
         throw error;
-    }
-
-    console.log(error)
-    const address = server.address();
-    const binding = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+    }   
 
     // if ('EACCES') {
     //     console.error(binding + ' requires higher priviledge');

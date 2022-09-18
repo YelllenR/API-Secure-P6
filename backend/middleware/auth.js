@@ -19,15 +19,14 @@ module.exports = (request, response, next) => {
         const userId = decodedToken.userId;
 
 
-
-        // console.log(userIdDecodedToken);
-
-
         if (request.body.userId && (request.body.userId !== userId)) {
             throw 'Invalid user ID'
         }
         else {
             next();
+            // console.log("ok in auth"); 
+
+            // response.json({message: "ok sent" + request.body})
         }
         
         request.auth = {
@@ -37,7 +36,7 @@ module.exports = (request, response, next) => {
     catch (error) {
         response.status(401).json({ error: new Error('Invalid request') });
     }
-
+   
 };
 
 

@@ -3,12 +3,13 @@
  */
 const Sauce = require('../models/sauce');
 
-const userId = require("../middleware/auth")
+// const userId = require("../middleware/auth")
 
+const auth = require('../middleware/auth');
 
 const fileSystem = require('fs');
 
-
+// const sauce = require('../models/sauce');
 
 /** GET ALL SAUCES
  * @param {request, response, next} arrow function that calls the find method
@@ -18,11 +19,11 @@ const fileSystem = require('fs');
  * 2. If not catches the error, returns the status and a json with error
  */
 const getSauces = (request, response, next) => {
-    Sauce.find()
-    // .then(allSauces => response.status(200).json(allSauces))
-    // .catch(notFound => response.status(400).json({ notFound }))
 
-    next();
+    Sauce.find(request.body.sauces)
+        .then(sauce => response.send(sauce))
+        .catch(notFound => response.status(400).json({ notFound }));
+
 };
 
 
@@ -35,10 +36,16 @@ const getSauces = (request, response, next) => {
  */
 const getOneSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
-        .then(oneSauce => response.status(200).json(oneSauce))
-        .catch(notFound => response.status(404).json({ notFound }))
+        .then(oneSauce => {
+            console.log(oneSauce);
+            response.status(200).json(oneSauce)
+        })
+        .catch(notFound => {
+            console.log(notFound);
+            response.status(404).json({ notFound })
+        })
 
-    next();
+    // next();
 };
 
 
@@ -50,29 +57,28 @@ const getOneSauce = (request, response, next) => {
  * 
  */
 const postSauce = (request, response, next) => {
-    
-    request.body.sauce = (request.body.sauce);
+    const sauceObjet = JSON.parse(request.body.sauce);
 
-    const url = request.protocol + '://' + request.get('host');
-    
+    delete sauceObjet._id;
+
     const sauce = new Sauce({
-        userId: request.body.sauce.userId, 
-        name: request.body.sauce.name,
-        manufacturer: request.body.sauce.manufacturer,
-        description: request.body.sauce.description,
-        mainPepper: request.body.sauce.mainPepper,
-        imageUrl: url +'/uploads' + request.file.filename,
-        heat: request.body.sauce.heat
-
-    })
-
-
+        ...sauceObjet,
+        userId: request.auth.userId,
+        imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file.filename}`,
+        likes: 0,
+        dislikes: 0, 
+        usersLiked: [], 
+        usersDisliked: []
+    });
+    
     sauce.save()
         .then(response => response.status(201).json({ message: "Sauce créée" }))
-        .catch(errorCreation => response.status(403).json({ errorCreation }));
+        .catch(errorCreation => response.status(403).json.toString({ errorCreation }));
 
-    next();
 }
+
+
+
 
 
 /** MODIFY INFORMATIONS OF A SAUCE
@@ -92,8 +98,8 @@ const postSauce = (request, response, next) => {
 
 const putSauce = (request, response, next) => {
     const sauceObjet = request.file ? {
-        ...JSON.parse(request.body.sauce),
-        imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
+        ...JSON.parse(request.file.filenamee),
+        imageUrl: request.file.filename
     } : { ...request.body };
 
     delete sauceObjet._userId;
@@ -110,8 +116,6 @@ const putSauce = (request, response, next) => {
             }
         })
         .catch(error => response.status(400).json({ error }));
-
-    next();
 };
 
 
@@ -129,25 +133,23 @@ const putSauce = (request, response, next) => {
  * 
  */
 const deleteSauce = (request, response, next) => {
-    Sauce.findOne({ _id: request.params.id })
-        .then(sauce => {
-            if (sauce.userId != request.auth.userId) {
-                response.status(403).json({ message: "Cette suppression n'est pas autorisée" })
-            }
-            else {
-                const filename = sauce.imageUrl.split("/images/")[1];
-                fileSystem.unlink(`images/${filename}`, () => {
+Sauce.findOne({ _id: request.params.id })
+    .then(sauce => {
+        if (sauce.userId != request.auth.userId) {
+            response.status(403).json({ message: "Cette suppression n'est pas autorisée" })
+        }
+        else {
+            const filename = sauce.imageUrl.split("/images/")[1];
+            fileSystem.unlink(`images/${filename}`, () => {
 
-                    Sauce.deleteOne({ _id: request.params.id })
-                        .then(response => response.status(200).json({ message: "Suppression réussie" }))
-                        .catch(deleteError => response.status(400).json(deleteError));
-                });
-            }
-        })
+                Sauce.deleteOne({ _id: request.params.id })
+                    .then(response => response.status(200).json({ message: "Suppression réussie" }))
+                    .catch(deleteError => response.status(400).json(deleteError));
+            });
+        }
+    })
 
-        .catch(error => response.status(500).json({ error }));
-
-    next();
+    .catch(error => response.status(500).json({ error }));
 };
 
 

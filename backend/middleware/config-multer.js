@@ -25,17 +25,21 @@ const MIME_TYPE = {
  * @return {function callback} for execution of the given code 
  * 
  */
-const storage = multer.diskStorage({
-    destination:(request, file, callback) => {
-        callback(null, 'uploads');
+const Storage = multer.diskStorage({
+    destination: (request, file, callback) => {
+        callback(null, 'images');
     },
-    filename:(request, file, callback) => {
-        const imgName = file.originalname.split(" ").join("_");
+    filename: (request, file, callback) => {
+        const imgName = file.originalname;
         const extentionType = MIME_TYPE[file.mimetype];
 
-        callback(null, imgName + "_" + Date.now() + '.' + extentionType)
+        callback(null, Date.now() + imgName )
     }
 });
 
+const upload = multer({ storage: Storage })
+
 // Exporting the multer/ storage function and single to have a single image file. 
-module.exports = multer({ storage }).single('image');
+module.exports = upload.single('image');
+
+
