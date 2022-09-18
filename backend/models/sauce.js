@@ -1,4 +1,7 @@
+
 const mongoose = require('mongoose');
+
+// const { buffer } = require('stream/consumers');
 
 const sauceSchema = mongoose.Schema({
     userId: { type: String, require: true },
@@ -10,8 +13,8 @@ const sauceSchema = mongoose.Schema({
     heat: { type: Number, require: true },
     likes: { type: Number, require: true },
     dislikes: { type: Number, require: true },
-    usersLiked: [userId],
-    usersDisliked: [userId]
+    usersLiked: [{type: String}],
+    usersDisliked: [{type: String}],
 });
 
 module.exports = mongoose.model('Sauce', sauceSchema);

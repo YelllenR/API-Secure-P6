@@ -31,7 +31,7 @@ const portValueCheck = valueOfPort => {
  * PORT and ANOTHER_PORT are set in env file
  */
 const port = portValueCheck(process.env.PORT || process.env.ANOTHER_PORT);
-application.set('port', port)
+application.set('port', port);
 
 
 
@@ -45,19 +45,16 @@ application.set('port', port)
 const errorHandler = error => {
     if (error.syscall !== 'listen') {
         throw error;
-    }
+    }   
 
-    const address = server.address();
-    const binding = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
-
-    if ('EACCES') {
-        console.error(binding + ' requires higher priviledge');
-        process.exit(1);
-    }
-    else if ('EADDRINUSE') {
-        console.error(binding + ' is already in use');
-        process.exit(1);
-    }  
+    // if ('EACCES') {
+    //     console.error(binding + ' requires higher priviledge');
+    //     process.exit(1);
+    // }
+    // else if ('EADDRINUSE') {
+    //     console.error(binding + ' is already in use');
+    //     process.exit(1);
+    // }
 };
 
 
