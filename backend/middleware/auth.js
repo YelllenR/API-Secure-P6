@@ -24,9 +24,6 @@ module.exports = (request, response, next) => {
         }
         else {
             next();
-            // console.log("ok in auth"); 
-
-            // response.json({message: "ok sent" + request.body})
         }
         
         request.auth = {

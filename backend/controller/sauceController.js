@@ -22,8 +22,7 @@ const getSauces = (request, response, next) => {
 
     Sauce.find(request.body.sauces)
         .then(sauce => response.send(sauce))
-        .catch(notFound => response.status(400).json({ notFound }));
-
+        .catch(notFound => response.status(400).json({ notFound }))
 };
 
 
@@ -37,7 +36,6 @@ const getSauces = (request, response, next) => {
 const getOneSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
         .then(oneSauce => {
-            console.log(oneSauce);
             response.status(200).json(oneSauce)
         })
         .catch(notFound => {
@@ -45,7 +43,6 @@ const getOneSauce = (request, response, next) => {
             response.status(404).json({ notFound })
         })
 
-    // next();
 };
 
 
@@ -60,21 +57,21 @@ const postSauce = (request, response, next) => {
     const sauceObjet = JSON.parse(request.body.sauce);
 
     delete sauceObjet._id;
+    delete sauceObjet.userId;
 
     const sauce = new Sauce({
         ...sauceObjet,
         userId: request.auth.userId,
         imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file.filename}`,
         likes: 0,
-        dislikes: 0, 
-        usersLiked: [], 
+        dislikes: 0,
+        usersLiked: [],
         usersDisliked: []
     });
-    
-    sauce.save()
-        .then(response => response.status(201).json({ message: "Sauce créée" }))
-        .catch(errorCreation => response.status(403).json.toString({ errorCreation }));
-
+    console.log(request.body)
+    sauce.save(sauceObjet)
+        .then(() => response.status(201).json({ message: "Sauce créée" }))
+        .catch(error => response.status(403).json({ error }))
 }
 
 
@@ -107,15 +104,16 @@ const putSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
         .then((sauce) => {
             if (sauce.userId != request.auth.userId) {
-                response.status(403).json({ message: "Cette opération n'est pas autorisée" })
+                response.status(403).json({ message: "Cette opération n'est pas autorisée" });
             }
             else {
                 Sauce.updateOne({ _id: request.params.id }), { ...sauceObjet, _id: request.params.id }
-                    .then(response => response.status(200).json({ message: "Le produit a été modifié" }))
+                    .then(() => response.status(200).json({ message: "Le produit a été modifié" }))
                     .catch(modificationError => response.status(400).json({ modificationError }));
             }
         })
-        .catch(error => response.status(400).json({ error }));
+        .catch(error => response.status(400).json({ error }))
+
 };
 
 
@@ -133,23 +131,25 @@ const putSauce = (request, response, next) => {
  * 
  */
 const deleteSauce = (request, response, next) => {
-Sauce.findOne({ _id: request.params.id })
-    .then(sauce => {
-        if (sauce.userId != request.auth.userId) {
-            response.status(403).json({ message: "Cette suppression n'est pas autorisée" })
-        }
-        else {
-            const filename = sauce.imageUrl.split("/images/")[1];
-            fileSystem.unlink(`images/${filename}`, () => {
+    Sauce.findOne({ _id: request.params.id })
+        .then(sauce => {
+            if (sauce.userId != request.auth.userId) {
+                response.status(403).json({ message: "Cette suppression n'est pas autorisée" })
+                response.send("Cette opération n'est pas autorisée");
+            }
+            else {
+                const filename = sauce.imageUrl.split("/images/")[1];
+                fileSystem.unlink(`images/${filename}`, () => {
 
-                Sauce.deleteOne({ _id: request.params.id })
-                    .then(response => response.status(200).json({ message: "Suppression réussie" }))
-                    .catch(deleteError => response.status(400).json(deleteError));
-            });
-        }
-    })
+                    Sauce.deleteOne({ _id: request.params.id })
+                        .then(() => response.status(200).json({ message: "Suppression réussie" }))
+                        .catch(deleteError => response.status(400).json({ deleteError }));
+                });
+            }
+        })
 
-    .catch(error => response.status(500).json({ error }));
+        .catch(error => response.status(500).json({ error }))
+
 };
 
 
