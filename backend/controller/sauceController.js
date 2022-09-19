@@ -95,25 +95,27 @@ const postSauce = (request, response, next) => {
 
 const putSauce = (request, response, next) => {
     const sauceObjet = request.file ? {
-        ...JSON.parse(request.file.filenamee),
-        imageUrl: request.file.filename
+        ...JSON.parse(request.body.sauce),
+        imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file.filename}`
     } : { ...request.body };
+
 
     delete sauceObjet._userId;
 
     Sauce.findOne({ _id: request.params.id })
         .then((sauce) => {
             if (sauce.userId != request.auth.userId) {
+                console.log(sauce.userId != request.auth.userId)
                 response.status(403).json({ message: "Cette opération n'est pas autorisée" });
             }
             else {
-                Sauce.updateOne({ _id: request.params.id }), { ...sauceObjet, _id: request.params.id }
+                Sauce.updateOne(({ _id: request.params.id }), { ...sauceObjet, _id: request.params.id })
+
                     .then(() => response.status(200).json({ message: "Le produit a été modifié" }))
-                    .catch(modificationError => response.status(400).json({ modificationError }));
+                    .catch(error => response.status(400).json({ error }))
             }
         })
         .catch(error => response.status(400).json({ error }))
-
 };
 
 
@@ -135,7 +137,6 @@ const deleteSauce = (request, response, next) => {
         .then(sauce => {
             if (sauce.userId != request.auth.userId) {
                 response.status(403).json({ message: "Cette suppression n'est pas autorisée" })
-                response.send("Cette opération n'est pas autorisée");
             }
             else {
                 const filename = sauce.imageUrl.split("/images/")[1];
@@ -147,9 +148,7 @@ const deleteSauce = (request, response, next) => {
                 });
             }
         })
-
         .catch(error => response.status(500).json({ error }))
-
 };
 
 
