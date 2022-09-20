@@ -12,14 +12,14 @@ const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 
 
-/** Array of like type for sauce
- * 
- */
-const likeSauce = {
-    like: 1,
-    neutral: 0,
-    dislike: -1
-};
+// /** Array of like type for sauce
+//  * 
+//  */
+// const likeSauce = {
+//     like: 1,
+//     neutral: 0,
+//     dislike: -1
+// };
 
 /** 1. .signUp takes three parameters: 1. the request on signing up, 2. the response and next(* not used here)
  *  2. Gets the crypted password which is an asynchronus method that returns promise
@@ -42,7 +42,6 @@ exports.signup = (request, response, next) => {
         })
 
         .catch(error => response.status(500).json({ message: error }));
-
 };
 
 
@@ -98,20 +97,3 @@ exports.login = (request, response, next) => {
 
 };
 
-
-// /** POST LIKE OR NOT ON SAUCE
-//  * @param {request, response, next} arrow function that calls the find method
-//  *
-//  * @return {Promise}
-//  *
-//  *
-//  */
-//  const postRatingSauce = (request, response, next) => {
-//     Sauce.findOne()
-//         .then(sauce => {
-//             if (sauce.userId != request.auth.userId)
-
-//         })
-//         .catch()
-
-// };

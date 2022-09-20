@@ -3,13 +3,13 @@
  */
 const Sauce = require('../models/sauce');
 
-// const userId = require("../middleware/auth")
+const userLike = require('../controller/likes-dislikes');
 
-const auth = require('../middleware/auth');
+// const auth = require('../middleware/auth');
 
 const fileSystem = require('fs');
 
-// const sauce = require('../models/sauce');
+
 
 /** GET ALL SAUCES
  * @param {request, response, next} arrow function that calls the find method
@@ -68,13 +68,11 @@ const postSauce = (request, response, next) => {
         usersLiked: [],
         usersDisliked: []
     });
-    console.log(request.body)
+
     sauce.save(sauceObjet)
         .then(() => response.status(201).json({ message: "Sauce créée" }))
         .catch(error => response.status(403).json({ error }))
 }
-
-
 
 
 
@@ -150,6 +148,37 @@ const deleteSauce = (request, response, next) => {
         })
         .catch(error => response.status(500).json({ error }))
 };
+
+
+// const likeObject = {
+//     like: 1,
+//     dislike: -1,
+//     neutral: 0
+// };
+
+
+// const userLike = (request, response, next) => {
+//     Sauce.findOne({ _id: request.params.id })
+
+//         .then((result) => {
+
+//             if (request.body.like) {
+//                 Sauce.updateOne({ _id: request.params.id },
+//                     {
+//                         $inc: { likes: likeObject.like },
+//                         $addToSet: { usersLiked: request.body.userId }
+//                     })
+//                     .then(() => response.status(200).json({ message: "ok like" }))
+//                     .catch(error => response.status(400).json({ message: error }))
+//             }
+
+
+//             response.status(200).json({ message: result })
+
+//         })
+
+//         .catch(error => response.status(400).json({ message: error }))
+// }
 
 
 // Exporting the created functions
