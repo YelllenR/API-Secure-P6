@@ -150,37 +150,6 @@ const deleteSauce = (request, response, next) => {
 };
 
 
-// const likeObject = {
-//     like: 1,
-//     dislike: -1,
-//     neutral: 0
-// };
-
-
-// const userLike = (request, response, next) => {
-//     Sauce.findOne({ _id: request.params.id })
-
-//         .then((result) => {
-
-//             if (request.body.like) {
-//                 Sauce.updateOne({ _id: request.params.id },
-//                     {
-//                         $inc: { likes: likeObject.like },
-//                         $addToSet: { usersLiked: request.body.userId }
-//                     })
-//                     .then(() => response.status(200).json({ message: "ok like" }))
-//                     .catch(error => response.status(400).json({ message: error }))
-//             }
-
-
-//             response.status(200).json({ message: result })
-
-//         })
-
-//         .catch(error => response.status(400).json({ message: error }))
-// }
-
-
 // Exporting the created functions
 module.exports = {
     getSauces,

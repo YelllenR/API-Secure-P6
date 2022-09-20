@@ -2,6 +2,7 @@ const express = require("express");
 
 const cors = require('cors');
 
+const helmet = require('helmet');
 
 /** Acces to express with application.js
  * 
@@ -34,6 +35,18 @@ mongoose.connect(process.env.DB_URL, {
     });
 
 
+application.use(
+    helmet.crossOriginEmbedderPolicy({ policy: "credentialless" }),
+    helmet({ crossOriginResourcePolicy: { policy: "same-site" } }),
+    helmet.hidePoweredBy(),
+    helmet.noSniff(),
+    helmet.hsts({
+        maxAge: 123456,
+        includeSubDomains: false,
+    })
+);
+
+
 
 
 application.use('/api', cors());
@@ -46,7 +59,7 @@ application.use('/api/auth', cors(), userRoute);
 
 // With the method use and assigning properties for the route and the connexion file
 application.use('/api/sauces', cors(), sauceRoute);
-application.use('/images', express.static((__dirname, 'images')));
+application.use('/images', express.static(path.join(__dirname, 'images')));
 
 
 

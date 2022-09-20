@@ -12,14 +12,6 @@ const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 
 
-// /** Array of like type for sauce
-//  * 
-//  */
-// const likeSauce = {
-//     like: 1,
-//     neutral: 0,
-//     dislike: -1
-// };
 
 /** 1. .signUp takes three parameters: 1. the request on signing up, 2. the response and next(* not used here)
  *  2. Gets the crypted password which is an asynchronus method that returns promise
@@ -59,13 +51,15 @@ exports.signup = (request, response, next) => {
  */
 exports.login = (request, response, next) => {
     User.findOne({ email: request.body.email })
-
+        
         .then(user => {
+
             if (user === null) {
                 response.status(401).json({ message: "Please check your email and password" })
             } else {
 
                 bcrypt.compare(request.body.password, user.password)
+
                     .then(valid => {
                         if (!valid) {
                             response.status(401).json({ message: "Paire identifiant/ mot de passe incorrecte" })
@@ -79,7 +73,7 @@ exports.login = (request, response, next) => {
 
                                     process.env.SECRETE_TOKEN,
 
-                                    { expiresIn: "24h" }
+                                    { expiresIn: "12h" }
                                 )
                             })
                         }
