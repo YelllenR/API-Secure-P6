@@ -59,13 +59,15 @@ exports.signup = (request, response, next) => {
  */
 exports.login = (request, response, next) => {
     User.findOne({ email: request.body.email })
-
+        
         .then(user => {
+
             if (user === null) {
                 response.status(401).json({ message: "Please check your email and password" })
             } else {
 
                 bcrypt.compare(request.body.password, user.password)
+
                     .then(valid => {
                         if (!valid) {
                             response.status(401).json({ message: "Paire identifiant/ mot de passe incorrecte" })
@@ -79,7 +81,7 @@ exports.login = (request, response, next) => {
 
                                     process.env.SECRETE_TOKEN,
 
-                                    { expiresIn: "24h" }
+                                    { expiresIn: "12h" }
                                 )
                             })
                         }

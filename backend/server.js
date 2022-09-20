@@ -47,14 +47,6 @@ const errorHandler = error => {
         throw error;
     }   
 
-    // if ('EACCES') {
-    //     console.error(binding + ' requires higher priviledge');
-    //     process.exit(1);
-    // }
-    // else if ('EADDRINUSE') {
-    //     console.error(binding + ' is already in use');
-    //     process.exit(1);
-    // }
 };
 
 
