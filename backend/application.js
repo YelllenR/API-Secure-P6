@@ -19,9 +19,8 @@ const mongoose = require("mongoose");
 const userRoute = require('./routes/userRoutes');
 
 const sauceRoute = require('./routes/sauceRoutes');
+
 const path = require('path');
-
-
 
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
@@ -49,12 +48,14 @@ application.use('/api/auth', cors(), userRoute);
 application.use('/api/sauces', cors(), sauceRoute);
 application.use('/images', express.static((__dirname, 'images')));
 
+
+
 application.use((error, request, response, next) => {
     const message = `An error occured ->${error.field} ${request.body}`;
     response.status(500).send(message);
 });
 
-// application.options('/api', cors());
+
 
 
 
