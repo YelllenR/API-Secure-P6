@@ -1,10 +1,14 @@
 // Imports the library dotenv
 require('dotenv').config();
 
-// Voir pour implémenter un autre module pour https
+/** Importing the HTTP module
+ * 
+ */
 const http = require('http');
 
-// Imports application.js
+/** Importing application file to be used in the server file
+ * 
+ */
 const application = require('./application');
 
 

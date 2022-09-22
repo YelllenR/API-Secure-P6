@@ -4,15 +4,6 @@
 const multer = require('multer');
 
 
-/** Format of the image
- *  According to the format uploaded, it converts it to the standard values
- */
-const MIME_TYPE = {
-    "image/jpg": "jpg",
-    "image/jpeg": "jpg",
-    "image/png": "png"
-};
-
 /** Creation of a storage for the images 
  * 1. With the function multer.diskStorage, to give the destination of the file.
  * here it will be stored to the disk, using callback to execute the function. 
@@ -31,8 +22,6 @@ const Storage = multer.diskStorage({
     },
     filename: (request, file, callback) => {
         const imgName = file.originalname;
-        // const extentionType = MIME_TYPE[file.mimetype];
-
         callback(null, Date.now() + imgName )
     }
 });

@@ -5,9 +5,7 @@ const jsonwebtoken = require('jsonwebtoken');
 /** Gets the token generated 
  * Execute try / catch to detecte problems
  * 
- * @param {*} request 
- * @param {*} response 
- * @param {*} next 
+ * @param {request, response, next} request: the request sent, the response from the backend and next execute the other code
  * 
  *  1. Get token from request the split to get only the token
  */
