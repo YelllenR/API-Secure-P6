@@ -61,13 +61,24 @@ application.use(express.urlencoded({ extended: false }));
 
 // use property with configuration for security concept, module Helmet is used for this
 application.use(
-    helmet.crossOriginEmbedderPolicy({ policy: "credentialless" }),
+
+    // It prevents a document from loading any cross-origin resources if it doesn't have any permission
+    helmet.crossOriginEmbedderPolicy({ policy: "require-corp" }),
+
+    // Another layer of security to specify that the resources come frome the same site
     helmet({ crossOriginResourcePolicy: { policy: "same-site" } }),
+
+    // It removes the powered by header
     helmet.hidePoweredBy(),
+
+    // Blocks the cross reading for the same MIME types
     helmet.noSniff(),
+    
+    // Activates the strict transport security, that forces the client to use only secure connections to access the site
+    // If it is still active, it prevents attack of type man-in-the-middle
     helmet.hsts({
         maxAge: 123456,
-        includeSubDomains: false,
+        includeSubDomains: false
     })
 );
 
@@ -93,8 +104,6 @@ application.use((error, request, response, next) => {
     const message = `An error occured ->${error.field} ${request.body}`;
     response.status(500).send(message);
 });
-
-
 
 
 

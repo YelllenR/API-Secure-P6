@@ -55,7 +55,12 @@ const errorHandler = error => {
 
 
 /** Creates server with port in application.set
- * 
+ * 1. With the function createServer using the application file
+ * 2. First step, handling potential error 
+ * 3. Then showing a message to indicate on which port the server is listening
+ * 4. The address takes the server with the method address
+ * 5. The binding, verifies the type of addresse and if it's a string and with an optinal chaining 
+ *    gets the pipe plus the address and the port
  */
 const server = http.createServer(application);
 server.on('error', errorHandler);
@@ -66,4 +71,5 @@ server.on('listening', () => {
     console.log('Listening on ' + binding);
 });
 
+// Callinf the server with the method listen to listen on the actual port
 server.listen(port);
