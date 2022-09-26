@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 
 /** Installation of package jsonwebtoken
  * Import jsonwebtoken
- */ 
+ */
 const jsonwebtoken = require('jsonwebtoken');
 
 
@@ -29,8 +29,8 @@ exports.signup = (request, response, next) => {
             });
 
             user.save()
-                .then(savingUser => response.status(201).json({ message: "User created" + savingUser }))
-                .catch(error => response.status(400).json({ message: error + "Something went wrong" }));
+                .then(savingUser => response.status(201).json({ message: "Utilisateur créé" }))
+                .catch(error => response.status(400).json({ message: error }));
         })
 
         .catch(error => response.status(500).json({ message: error }));
@@ -51,7 +51,7 @@ exports.signup = (request, response, next) => {
  */
 exports.login = (request, response, next) => {
     User.findOne({ email: request.body.email })
-        
+
         .then(user => {
 
             if (user === null) {
