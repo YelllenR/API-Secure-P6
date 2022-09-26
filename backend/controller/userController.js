@@ -33,6 +33,7 @@ exports.signup = (request, response, next) => {
                 .then(() => response.status(201).json({ message: "Utilisateur créé" }))
                 .catch(error => response.status(400).json({ message: error }));
 
+
         })
 
         .catch(error => response.status(500).json({ message: error }));
