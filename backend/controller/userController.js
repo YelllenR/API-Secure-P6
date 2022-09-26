@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 
 /** Installation of package jsonwebtoken
  * Import jsonwebtoken
- */
+ */ 
 const jsonwebtoken = require('jsonwebtoken');
 
 
