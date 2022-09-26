@@ -29,11 +29,8 @@ exports.signup = (request, response, next) => {
             });
 
             user.save()
-
-                .then(() => response.status(201).json({ message: "Utilisateur créé" }))
-                .catch(error => response.status(400).json({ message: error }));
-
-
+                .then(savingUser => response.status(201).json({ message: "User created" + savingUser }))
+                .catch(error => response.status(400).json({ message: error + "Something went wrong" }));
         })
 
         .catch(error => response.status(500).json({ message: error }));
