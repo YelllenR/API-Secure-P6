@@ -48,7 +48,7 @@ exports.userLike = (request, response, next) => {
                             $addToSet: { usersLiked: request.body.userId }
                         })
                         .then(() => response.status(200).json({ message: "ok like" }))
-                        .catch(error => response.status(400).json({ message: error }))
+                        .catch(error => response.status(404).json({ message: error }))
 
                     break;
 
@@ -59,7 +59,7 @@ exports.userLike = (request, response, next) => {
                             $addToSet: { usersDisliked: request.body.userId }
                         })
                         .then(() => response.status(200).json({ message: "ok dislike" }))
-                        .catch(error => response.status(400).json({ message: error }))
+                        .catch(error => response.status(404).json({ message: error }))
 
                     break;
 
@@ -73,7 +73,7 @@ exports.userLike = (request, response, next) => {
                                 $pull: { usersLiked: request.body.userId }
                             })
                             .then((result) => response.status(200).json({ result }))
-                            .catch(error => response.status(400).json({ message: error }))
+                            .catch(error => response.status(404).json({ message: error }))
                     }
 
                     if (result.usersDisliked.includes(request.body.userId)) {
@@ -84,12 +84,12 @@ exports.userLike = (request, response, next) => {
                                 $pull: { usersDisliked: request.body.userId }
                             })
                             .then((result) => response.status(200).json({ result }))
-                            .catch(error => response.status(400).json({ message: error }))
+                            .catch(error => response.status(404).json({ message: error }))
                     }
                     break;
             }
 
         })
 
-        .catch(error => response.status(500).json({ message: error }))
+        .catch(error => response.status(400).json({ message: error }))
 }

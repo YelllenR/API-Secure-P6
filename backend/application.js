@@ -99,14 +99,5 @@ application.use('/api/sauces', cors(), sauceRoute);
 application.use('/images', express.static(path.join(__dirname, 'images')));
 
 
-// To render a message if an error occurs
-application.use((error, request, response, next) => {
-    const message = `An error occured ->${error.field} ${request.body}`;
-    response.status(500).send(message);
-});
-
-
-
-
 // to export application
 module.exports = application;

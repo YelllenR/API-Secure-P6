@@ -38,7 +38,7 @@ const getOneSauce = (request, response, next) => {
             response.status(200).json(oneSauce)
         })
         .catch(notFound => {
-            response.status(404).json({ notFound })
+            response.status(403).json({ notFound })
         });
 };
 
@@ -62,15 +62,13 @@ const postSauce = (request, response, next) => {
     const sauce = new Sauce({
         ...sauceObjet,
         userId: request.auth.userId,
-        imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file.filename}`,
-
+        imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file.filename}`
     });
 
-    sauce.save(sauceObjet)
+    sauce.save()
         .then(() => response.status(201).json({ message: "Sauce créée" }))
-        .catch(error => response.status(403).json({ error }))
+        .catch(error => response.status(403).json({ message: error }))
 }
-
 
 
 /** MODIFY INFORMATIONS OF A SAUCE
@@ -107,7 +105,7 @@ const putSauce = (request, response, next) => {
                 Sauce.updateOne(({ _id: request.params.id }), { ...sauceObjet, _id: request.params.id })
 
                     .then(() => response.status(200).json({ message: "Le produit a été modifié" }))
-                    .catch(error => response.status(400).json({ error }))
+                    .catch(error => response.status(403).json({ message: error }))
             }
         })
         .catch(error => response.status(400).json({ error }))
@@ -131,7 +129,7 @@ const deleteSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
         .then(sauce => {
             if (sauce.userId != request.auth.userId) {
-                response.status(403).json({ message: "Cette suppression n'est pas autorisée" })
+                response.status(401).json({ message: "Cette suppression n'est pas autorisée" })
             }
             else {
                 const filename = sauce.imageUrl.split("/images/")[1];
@@ -139,11 +137,11 @@ const deleteSauce = (request, response, next) => {
 
                     Sauce.deleteOne({ _id: request.params.id })
                         .then(() => response.status(200).json({ message: "Suppression réussie" }))
-                        .catch(deleteError => response.status(400).json({ deleteError }));
+                        .catch(deleteError => response.status(403).json({ message: deleteError }));
                 });
             }
         })
-        .catch(error => response.status(500).json({ error }))
+        .catch(error => response.status(403).json({ message: error }))
 };
 
 
