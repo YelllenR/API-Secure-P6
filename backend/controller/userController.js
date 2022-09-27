@@ -55,7 +55,7 @@ exports.login = (request, response, next) => {
         .then(user => {
 
             if (user === null) {
-                response.status(401).json({ message: "Please check your email and password" })
+                response.status(400).json({ message: "Please check your email and password" })
             } else {
 
                 bcrypt.compare(request.body.password, user.password)
@@ -86,7 +86,7 @@ exports.login = (request, response, next) => {
         })
 
         .catch(error => {
-            response.status(401).json({ error });
+            response.status(400).json({ error });
         });
 
 };

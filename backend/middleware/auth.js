@@ -18,10 +18,10 @@ module.exports = (request, response, next) => {
 
 
         if (request.body.userId && (request.body.userId !== userId)) {
-            throw 'Invalid user ID'
+            response.status(401).json({message: "error"})
         }
         else {
-            next();
+             next();
         }
         
         request.auth = {
@@ -29,9 +29,8 @@ module.exports = (request, response, next) => {
         };
     }
     catch (error) {
-        response.status(401).json({ error: new Error('Invalid request') });
+        response.status(401).json({ message: 'Invalid request' });
     }
-   
 };
 
 

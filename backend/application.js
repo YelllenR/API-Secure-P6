@@ -47,7 +47,7 @@ mongoose.connect(process.env.DB_URL, {
     useUnifiedTopology: true
 })
 
-    .then((response) => response = console.log("Connecté à la base de données"))
+    .then(() => response = console.log("Connecté à la base de données"))
     .catch(errorConnexion => {
         console.error("Connexion échouée", errorConnexion)
         process.exit();
@@ -96,7 +96,7 @@ application.use('/api/auth', cors(), userRoute);
 application.use('/api/sauces', cors(), sauceRoute);
 
 // Accessing and connecting to the images folder
-application.use('/images', express.static(path.join(__dirname, 'images')));
+application.use('/images', express.static(path.resolve(__dirname, 'images')));
 
 
 // to export application

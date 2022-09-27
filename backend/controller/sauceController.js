@@ -20,7 +20,7 @@ const fileSystem = require('fs');
 const getSauces = (request, response, next) => {
 
     Sauce.find(request.body.sauces)
-        .then((sauce) => response.send(sauce))
+        .then((sauce) => response.status(200).send(sauce))
         .catch(notFound => response.status(400).json({ notFound }));
 };
 
@@ -34,12 +34,8 @@ const getSauces = (request, response, next) => {
  */
 const getOneSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
-        .then(oneSauce => {
-            response.status(200).json(oneSauce)
-        })
-        .catch(notFound => {
-            response.status(403).json({ notFound })
-        });
+        .then(oneSauce => response.status(200).json(oneSauce))
+        .catch(notFound => response.status(403).json({ notFound }))
 };
 
 
@@ -56,18 +52,15 @@ const getOneSauce = (request, response, next) => {
 const postSauce = (request, response, next) => {
     const sauceObjet = JSON.parse(request.body.sauce);
 
-    delete sauceObjet._id;
-    delete sauceObjet.userId;
-
     const sauce = new Sauce({
         ...sauceObjet,
-        userId: request.auth.userId,
         imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file.filename}`
     });
 
+
     sauce.save()
         .then(() => response.status(201).json({ message: "Sauce créée" }))
-        .catch(error => response.status(403).json({ message: error }))
+        .catch(error => response.status(400).json({ error }))
 }
 
 
@@ -98,7 +91,6 @@ const putSauce = (request, response, next) => {
     Sauce.findOne({ _id: request.params.id })
         .then((sauce) => {
             if (sauce.userId != request.auth.userId) {
-                console.log(sauce.userId != request.auth.userId)
                 response.status(403).json({ message: "Cette opération n'est pas autorisée" });
             }
             else {
