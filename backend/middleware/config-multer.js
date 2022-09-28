@@ -18,18 +18,17 @@ const multer = require('multer');
  */
 const Storage = multer.diskStorage({
     destination: (request, file, callback) => {
-        callback(null, 'images');
+        callback(null, 'images')
     },
     filename: (request, file, callback) => {
-        const imgName = file.originalname;
-        callback(null, Date.now()+ "-" + imgName); 
+        const name = file.originalname;
+        callback(null, name + "-" + Date.now())
     }
-});
+})
 
-const upload = multer({ storage: Storage })
 
 
 // Exporting the multer/ storage function and single to have a single image file. 
-module.exports = upload.single('image');
+module.exports = multer({ storage : Storage }).single('image')
 
 

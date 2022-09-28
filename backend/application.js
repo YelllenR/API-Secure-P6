@@ -96,7 +96,7 @@ application.use('/api/auth', cors(), userRoute);
 application.use('/api/sauces', cors(), sauceRoute);
 
 // Accessing and connecting to the images folder
-application.use('/images', express.static(path.resolve(__dirname, 'images')));
+application.use('/images', express.static(path.join(__dirname, 'images')));
 
 
 // to export application

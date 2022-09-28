@@ -52,33 +52,21 @@ const getOneSauce = (request, response, next) => {
  *     ii. if no image was uploaded, it renders an adequate status code
  */
 const postSauce = (request, response, next) => {
-    const sauceObjet = request.body.sauce;
+    const sauceObjet = JSON.parse(request.body.sauce);
 
-    if (sauceObjet) {
-        JSON.parse(sauceObjet);
-        const sauce = new Sauce({
-            ...sauceObjet,
-            imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file}`
-        });
+    const sauce = new Sauce({
+        ...sauceObjet,
+        userId: request.auth.userId,
+        imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
+    })
 
-        sauce.save()
-            .then(() => {
-                if (request.file !== undefined) {
-                    response.status(201).json({ message: "Sauce créée" })
- 
-                } else {
-                    response.status(400).json({ message: "Veuillez rajouter une image" })
-                }
-            })
+    sauce.save()
+        .then(() => response.status(201).json({ message: "Sauce créée" }))
+        .catch(error => response.status(400).json({ error }))
 
-            .catch(error => response.status(400).json({ error }));
-
-    } else {
-        response.status(400).json({ message: "Veuillez indiquer les informations de la sauce" })
-    }
 }
 
-// const { body, resultValidation } = require('express-validator');
+
 
 /** MODIFY INFORMATIONS OF A SAUCE
  * @param {request, response, next} arrow function that calls the find method
