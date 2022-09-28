@@ -9,7 +9,6 @@ const Sauce = require('../models/sauce');
 const fileSystem = require('fs');
 
 
-
 /** GET ALL SAUCES
  * @param {request, response, next} arrow function that calls the find method
  * 
@@ -48,21 +47,39 @@ const getOneSauce = (request, response, next) => {
  * 3. deletion of the user id from the front end
  * 4. creation a new product based on the model and assigning the different values
  * 5. Calling the method save to create and save the new product
+ * 6. Several checks are done on those cases: 
+ *     i. if form fields return true then it parses the request body and saves data in database
+ *     ii. if no image was uploaded, it renders an adequate status code
  */
 const postSauce = (request, response, next) => {
-    const sauceObjet = JSON.parse(request.body.sauce);
+    const sauceObjet = request.body.sauce;
 
-    const sauce = new Sauce({
-        ...sauceObjet,
-        imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file.filename}`
-    });
+    if (sauceObjet) {
+        JSON.parse(sauceObjet);
+        const sauce = new Sauce({
+            ...sauceObjet,
+            imageUrl: `${request.protocol}://${request.get('host')}/images/${request.file}`
+        });
 
+        sauce.save()
+            .then(() => {
+                if (request.file !== undefined) {
+                   console.log(pathImage.filename)
+                    response.status(201).json({ message: "Sauce créée" })
+ 
+                } else {
+                    response.status(400).json({ message: "Veuillez rajouter une image" })
+                }
+            })
 
-    sauce.save()
-        .then(() => response.status(201).json({ message: "Sauce créée" }))
-        .catch(error => response.status(400).json({ error }))
+            .catch(error => response.status(400).json({ error }));
+
+    } else {
+        response.status(400).json({ message: "Veuillez indiquer les informations de la sauce" })
+    }
 }
 
+// const { body, resultValidation } = require('express-validator');
 
 /** MODIFY INFORMATIONS OF A SAUCE
  * @param {request, response, next} arrow function that calls the find method
