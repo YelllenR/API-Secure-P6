@@ -64,7 +64,6 @@ const postSauce = (request, response, next) => {
         sauce.save()
             .then(() => {
                 if (request.file !== undefined) {
-                   console.log(pathImage.filename)
                     response.status(201).json({ message: "Sauce créée" })
  
                 } else {
