@@ -7,6 +7,7 @@ const Sauce = require('../models/sauce');
  * 
  */
 const fileSystem = require('fs');
+const { parse } = require('path');
 
 
 /** GET ALL SAUCES
@@ -53,13 +54,23 @@ const getOneSauce = (request, response, next) => {
  */
 const postSauce = (request, response, next) => {
     const sauceObjet = JSON.parse(request.body.sauce);
-
+    //const fileParse = JSON.parse(request.file)
     const sauce = new Sauce({
         ...sauceObjet,
         userId: request.auth.userId,
         imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
     })
 
+//
+
+
+if(Object.keys(request.file).values().filename){
+    console.log("empty")
+}
+
+if(!Object.keys(request.body.sauce).values()){
+    console.log("text fields zero")
+}
     sauce.save()
         .then(() => response.status(201).json({ message: "Sauce créée" }))
         .catch(error => response.status(400).json({ error }))
