@@ -61,16 +61,7 @@ const postSauce = (request, response, next) => {
         imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
     })
 
-//
 
-
-if(Object.keys(request.file).values().filename){
-    console.log("empty")
-}
-
-if(!Object.keys(request.body.sauce).values()){
-    console.log("text fields zero")
-}
     sauce.save()
         .then(() => response.status(201).json({ message: "Sauce créée" }))
         .catch(error => response.status(400).json({ error }))
