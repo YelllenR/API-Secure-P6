@@ -42,25 +42,29 @@ exports.userLike = (request, response, next) => {
             switch (request.body.like) {
 
                 case likeObject.like:
-                    Sauce.updateOne({ _id: request.params.id },
-                        {
-                            $inc: { likes: likeObject.like },
-                            $addToSet: { usersLiked: request.body.userId }
-                        })
-                        .then(() => response.status(200).json({ message: "ok like" }))
-                        .catch(error => response.status(404).json({ message: error }))
+                    if (!result.usersLiked.includes(request.body.userId)) {
 
+                        Sauce.updateOne({ _id: request.params.id },
+                            {
+                                $inc: { likes: likeObject.like },
+                                $addToSet: { usersLiked: request.body.userId }
+                            })
+                            .then(() => response.status(200).json({ message: "Ajout du like au produit" }))
+                            .catch(error => response.status(404).json({ message: error }))
+                    }
                     break;
 
                 case likeObject.dislike:
-                    Sauce.updateOne({ _id: request.params.id },
-                        {
-                            $inc: { dislikes: likeObject.dislikeNotNegative },
-                            $addToSet: { usersDisliked: request.body.userId }
-                        })
-                        .then(() => response.status(200).json({ message: "ok dislike" }))
-                        .catch(error => response.status(404).json({ message: error }))
+                    if (!result.usersDisliked.includes(request.body.userId)) {
 
+                        Sauce.updateOne({ _id: request.params.id },
+                            {
+                                $inc: { dislikes: likeObject.dislikeNotNegative },
+                                $addToSet: { usersDisliked: request.body.userId }
+                            })
+                            .then(() => response.status(200).json({ message: "Ajout du dislike au produit" }))
+                            .catch(error => response.status(404).json({ message: error }))
+                    }
                     break;
 
                 case likeObject.neutral:
@@ -88,8 +92,7 @@ exports.userLike = (request, response, next) => {
                     }
                     break;
             }
-
         })
 
-        .catch(error => response.status(400).json({ message: error }))
+        .catch(error => response.status(500).json({ message: error }))
 }

@@ -61,14 +61,14 @@ const postSauce = (request, response, next) => {
         imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
     })
 
-
     sauce.save()
         .then(() => response.status(201).json({ message: "Sauce créée" }))
-        .catch(error => response.status(400).json({ error }))
+        .catch(error => response.status(500).json({ error }))
 
 }
 
-
+// .then(() => response.status(201).json({ message: "Sauce créée" }))
+// .catch(error => response.status(400).json({ error }))
 
 /** MODIFY INFORMATIONS OF A SAUCE
  * @param {request, response, next} arrow function that calls the find method
