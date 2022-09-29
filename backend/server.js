@@ -70,5 +70,5 @@ server.on('listening', () => {
     console.log('Listening on ' + binding);
 });
 
-// Callinf the server with the method listen to listen on the actual port
+// Calling the server with the method listen to listen on the actual port
 server.listen(port);
