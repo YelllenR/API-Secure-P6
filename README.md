@@ -30,3 +30,6 @@ Points forts :
 **Soutenance**
 Remarques :
 Aurelie a bien expliqué le travail réalisé. Elle a démontré une connaissance des compétences évaluées dans le projet.
+
+
+Ecole: [Openclassrooms](https://openclassrooms.com/fr/paths/717-developpeur-web).
