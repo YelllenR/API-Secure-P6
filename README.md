@@ -1,27 +1,32 @@
-# HotTakes
+**Projet 6 - Piiquante**
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.4.
+**Context du projet:**
+Piiquante se dédie à la création de sauces épicées dont les recettes sont gardées secrètes. Pour tirer parti de son succès et générer davantage de buzz, l'entreprise souhaite créer une application web dans laquelle les utilisateurs peuvent ajouter leurs sauces préférées et liker ou disliker les sauces ajoutées par les autres.
 
-## Development server
+**Livrables:** 
+API Routes
+- Toutes les routes sauce pour les sauces doivent disposer d’une autorisation (le token est envoyé par le front-end avec l'en-tête d’autorisation : « Bearer <token> »). Avant que l'utilisateur puisse apporter des modifications à la route sauce, le code
+doit vérifier si l'userId actuel correspond à l'userId de la sauce et si ce n'est pas le cas, renvoyer le bon code d'erreur. 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Le mot de passe de l'utilisateur doit être haché.
+- L'authentification doit être renforcée sur toutes les routes sauce requises.
+- Les adresses électroniques dans la base de données sont uniques et un plugin Mongoose approprié est utilisé pour garantir leur unicité et signaler
+les erreurs.
+- La sécurité de la base de données MongoDB (à partir d'un service tel que MongoDB Atlas) ne doit pas empêcher l'application de se lancer sur la
+machine d'un utilisateur.
+- Un plugin Mongoose doit assurer la remontée des erreurs issues de la base de données.
+- Les versions les plus récentes des logiciels sont utilisées avec des correctifs
+de sécurité actualisés.
+- Le contenu du dossier images ne doit pas être téléchargé sur GitHub.
 
-## Code scaffolding
+**Projet validé** en Septembre 2022 avec l'évaluation suivante: 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Points forts :
+- Utilisation de Bcrypt
+- Utilisation de Helmet
+- Code du projet indenté et commenté
+- Utilisation de postman
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+**Soutenance**
+Remarques :
+Aurelie a bien expliqué le travail réalisé. Elle a démontré une connaissance des compétences évaluées dans le projet.
